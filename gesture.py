@@ -92,7 +92,7 @@ while(cap.isOpened()):
     elif count_defects == 4 and state:
         act.four()
     else:
-        print "unable to detect"
+        act.zero()
     if not state:
         a = int(raw_input())
         if a == 1:

@@ -14,6 +14,9 @@ class action:
         self.y_convert = screen_y * 1.0 / shape_y
     def screen_size(self):
         return self.mouse_cntrl.screen_size()
+    def zero(self):
+        self.prev_state = 'zero'
+        print "Unable to detect"
     def one(self, hull_p):
         if self.prev_state == 'one':
             x,y = self.mouse_cntrl.position()
