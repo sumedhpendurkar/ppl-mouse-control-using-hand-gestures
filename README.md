@@ -1,6 +1,9 @@
-<h1>This project is aimed to convert Python to C/C++</h1>
+<h1>This Application allows to use the mouse with the hand gestures</h1>
 
-Python codes tend to be much slower than C/C++, But writing code in Python is much simpler
-We aim to bridge this gap.
-
-/*under development*/
+<p>
+    <ul>
+        <li> 2 for moving mouse</li>
+        <li> 3 for left click </li>
+        <li> 4 for right click </li>
+    </ul>
+</p>
