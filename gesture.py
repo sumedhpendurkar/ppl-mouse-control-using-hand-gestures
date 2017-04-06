@@ -6,9 +6,10 @@ from pymouse import PyMouse
 import time
 cap = cv2.VideoCapture(0)
 count = 0
-act = action()
+ret, img = cap.read()
+act = action(img.shape)
+state = False
 screen_x, screen_y = act.screen_size()
-print screen_x, screen_y
 while(cap.isOpened()):
     time.sleep(0.05)
     ret, img = cap.read()
@@ -19,8 +20,9 @@ while(cap.isOpened()):
         continue
 
     #Create a box where image recognization takes place
-    cv2.rectangle(img,(screen_x/2,screen_y/2),(00,00),(0,255,0),0)
-    crop_img = img[00:screen_x/2, 00:screen_y/2]
+    img_x, img_y, _ = img.shape
+    cv2.rectangle(img,(img_x,img_y),(00,00),(0,255,0),0)
+    crop_img = img
 
     #Binarize
     grey = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
@@ -78,19 +80,23 @@ while(cap.isOpened()):
         #dist = cv2.pointPolygonTest(cnt,far,True)
         cv2.line(crop_img,start,end,[0,255,0],2)
         #cv2.circle(crop_img,far,5,[0,0,255],-1)
-    if count_defects == 1:
+    if count_defects == 1 and state:
         act.one(far)
         #mouse_cntrl.click(2,2,2)
-    elif count_defects == 2:
+    elif count_defects == 2 and state:
         act.two()
         #mouse_cntrl.click(2,2,1)
-    elif count_defects == 3:
+    elif count_defects == 3 and state:
         act.three()
         #mouse_cntrl.click(2,2,2)
-    elif count_defects == 4:
+    elif count_defects == 4 and state:
         act.four()
     else:
         print "unable to detect"
+    if not state:
+        a = int(raw_input())
+        if a == 1:
+            state = True
     #cv2.imshow('drawing', drawing)
     #cv2.imshow('end', crop_img)
     #cv2.imshow('Gesture', img)

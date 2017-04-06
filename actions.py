@@ -6,14 +6,18 @@ class action:
     prev_state = ''
     screen_x = 0
     screen_y = 0
-    def __init__(self):
+    def __init__(self, img_shape):
         self.mouse_cntrl = PyMouse()
+        shape_x, shape_y, _ = img_shape
+        print shape_x, shape_y, self.mouse_cntrl.screen_size()
         self.screen_x, self.screen_y = self.mouse_cntrl.screen_size()
+        self.x_convert = self.screen_x * 1.0 / shape_y 
+        self.y_convert = self.screen_y * 1.0 / shape_x
+        print shape_x, shape_y, self.screen_x, self.screen_y
     def screen_size(self):
         return self.mouse_cntrl.screen_size()
     def one(self, hull_p):
-        print "ek"+str(hull_p)
-        self.mouse_cntrl.move(2 * hull_p[0],2 * hull_p[1])
+        self.mouse_cntrl.move(self.x_convert * hull_p[0],self.y_convert * hull_p[1])
         self.prev_state = 'one'
     def two(self):
         print "don"
