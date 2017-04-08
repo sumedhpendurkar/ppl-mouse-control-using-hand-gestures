@@ -18,10 +18,13 @@ class action:
         self.prev_state = 'zero'
         print "Unable to detect"
     def one(self, hull_p):
+        print  "ek. Co-ordinates in image"+ str(hull_p)
         if self.prev_state == 'one':
             x,y = self.mouse_cntrl.position()
-            self.mouse_cntrl.move(x - self.prev_coordinates[0] + hull_p[0], 
-                y - self.prev_coordinates[1] + hull_p[1])
+            self.mouse_cntrl.move(x + self.x_convert * (-1 * self.prev_coordinates[0] + hull_p[0]), 
+                y + self.y_convert * (-1 * self.prev_coordinates[1] + hull_p[1]))
+            self.prev_coordinates[0] = hull_p[0]
+            self.prev_coordinates[1] = hull_p[1]
         else:
             self.prev_coordinates[0] = hull_p[0]
             self.prev_coordinates[1] = hull_p[1]
