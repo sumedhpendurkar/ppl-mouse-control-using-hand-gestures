@@ -12,6 +12,9 @@ class action:
         screen_x, screen_y = self.mouse_cntrl.screen_size()
         self.x_convert = screen_x * 1.0 / shape_x 
         self.y_convert = screen_y * 1.0 / shape_y
+        self.sensitivity = 1.0
+    def update_sensitivity(self, sensitivity):
+        self.sensitivity = sensitivity / 100.0
     def screen_size(self):
         return self.mouse_cntrl.screen_size()
     def zero(self):
@@ -21,8 +24,10 @@ class action:
         print  "ek. Co-ordinates in image"+ str(hull_p)
         if self.prev_state == 'one':
             x,y = self.mouse_cntrl.position()
-            self.mouse_cntrl.move(x + self.x_convert * (-1 * self.prev_coordinates[0] + hull_p[0]), 
-                y + self.y_convert * (-1 * self.prev_coordinates[1] + hull_p[1]))
+            new_x, new_y = x + self.sensitivity * self.x_convert * (-1 * \
+                    self.prev_coordinates[0] + hull_p[0]), \
+            y + self.sensitivity * self.y_convert * (-1 * self.prev_coordinates[1] + hull_p[1])
+            self.mouse_cntrl.move(int(new_x), int(new_y))
             self.prev_coordinates[0] = hull_p[0]
             self.prev_coordinates[1] = hull_p[1]
         else:

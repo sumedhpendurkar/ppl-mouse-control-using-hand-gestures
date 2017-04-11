@@ -4,8 +4,13 @@ import math
 from actions import *
 from pymouse import PyMouse
 import time
+def dummy(x):
+    pass
 cap = cv2.VideoCapture(0)
 count = 0
+cv2.namedWindow("alltime") # create a window to be displayed
+cv2.createTrackbar("Mouse Sensitivity", "alltime", 1, 200, dummy)
+cv2.setTrackbarPos("Mouse Sensitivity", "alltime", 100)
 ret, img = cap.read()
 act = action(img.shape)
 state = False
@@ -43,7 +48,7 @@ while(cap.isOpened()):
         contours, hierarchy = cv2.findContours(thresh1.copy(),cv2.RETR_TREE, \
                cv2.CHAIN_APPROX_NONE)
     
-    #ask varad; Looks like it finds out maximum area wala contour
+    #ask varad; Looks like it finds out maximum area contour
     cnt = max(contours, key = lambda x: cv2.contourArea(x))
    
     #drawing a rectangle on crop_img
@@ -80,6 +85,7 @@ while(cap.isOpened()):
         #dist = cv2.pointPolygonTest(cnt,far,True)
         cv2.line(crop_img,start,end,[0,255,0],2)
         #cv2.circle(crop_img,far,5,[0,0,255],-1)
+    act.update_sensitivity(cv2.getTrackbarPos("Mouse Sensitivity", "alltime"))
     if count_defects == 1 and state:
         act.one(far)
         #mouse_cntrl.click(2,2,2)
