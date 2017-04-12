@@ -28,7 +28,6 @@ import cv2
 import numpy as np
 import math
 from actions import *
-from pymouse import PyMouse
 import time
 def dummy(x):
     pass
@@ -40,7 +39,6 @@ cv2.setTrackbarPos("Mouse Sensitivity", "alltime", 100)
 ret, img = cap.read()
 act = action(img.shape)
 state = False
-screen_x, screen_y = act.screen_size()
 while(cap.isOpened()):
     time.sleep(0.05)
     ret, img = cap.read()
@@ -52,7 +50,7 @@ while(cap.isOpened()):
 
     #Create a box where image recognization takes place
     img_x, img_y, _ = img.shape
-    cv2.rectangle(img,(img_x,img_y),(00,00),(0,255,0),0)
+    cv2.rectangle(img, (img_x,img_y), (00,00), (0,255,0), 0)
     crop_img = img
 
     #Binarize
@@ -74,7 +72,7 @@ while(cap.isOpened()):
         contours, hierarchy = cv2.findContours(thresh1.copy(),cv2.RETR_TREE, \
                cv2.CHAIN_APPROX_NONE)
     
-    #ask varad; Looks like it finds out maximum area contour
+    #It finds out maximum area contour
     cnt = max(contours, key = lambda x: cv2.contourArea(x))
    
     #drawing a rectangle on crop_img
@@ -108,19 +106,14 @@ while(cap.isOpened()):
         if angle <= 90:
             count_defects += 1
             cv2.circle(crop_img,far,1,[0,0,255],-1)
-        #dist = cv2.pointPolygonTest(cnt,far,True)
         cv2.line(crop_img,start,end,[0,255,0],2)
-        #cv2.circle(crop_img,far,5,[0,0,255],-1)
     act.update_sensitivity(cv2.getTrackbarPos("Mouse Sensitivity", "alltime"))
     if count_defects == 1 and state:
         act.one(far)
-        #mouse_cntrl.click(2,2,2)
     elif count_defects == 2 and state:
         act.two()
-        #mouse_cntrl.click(2,2,1)
     elif count_defects == 3 and state:
         act.three()
-        #mouse_cntrl.click(2,2,2)
     elif count_defects == 4 and state:
         act.four()
     else:
