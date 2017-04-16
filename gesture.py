@@ -40,7 +40,6 @@ ret, img = cap.read()
 act = action(img.shape)
 state = False
 while(cap.isOpened()):
-    time.sleep(0.05)
     ret, img = cap.read()
 
     #Unable to read msg.. retry opening webcam object
