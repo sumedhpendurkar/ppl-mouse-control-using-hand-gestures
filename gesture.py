@@ -58,7 +58,7 @@ while(cap.isOpened()):
     blurred = cv2.GaussianBlur(grey, value, 0)
     _, thresh1 = cv2.threshold(blurred, 127, 255,
                                cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
-    cv2.imshow('Thresholded', thresh1)
+    #cv2.imshow('Thresholded', thresh1)
 
     version = '2'
     (version, _, _) = cv2.__version__.split('.')
@@ -77,14 +77,16 @@ while(cap.isOpened()):
     #drawing a rectangle on crop_img
     x,y,w,h = cv2.boundingRect(cnt)
     cv2.rectangle(crop_img,(x,y),(x+w,y+h),(0,0,255),0)
-    cv2.imshow("cropped and chopped", crop_img)
+    #cv2.imshow("cropped and chopped", crop_img)
 
     #Finding convex hulls. and drawing it on black img
     hull = cv2.convexHull(cnt)
     drawing = np.zeros(crop_img.shape,np.uint8)
     cv2.drawContours(drawing,[cnt],0,(0,255,0),0)
     cv2.drawContours(drawing,[hull],0,(0,0,255),0)
-    cv2.imshow("alltime", drawing)
+    to_be_displayed = drawing.copy()
+    to_be_displayed = cv2.resize(to_be_displayed, (400,300), cv2.INTER_AREA)
+    cv2.imshow("alltime", to_be_displayed)
 
     #find out hull and defects
     #defects stored in defects
@@ -92,7 +94,7 @@ while(cap.isOpened()):
     defects = cv2.convexityDefects(cnt,hull)
     count_defects = 0
     thresh1 = cv2.drawContours(thresh1, contours[0], -1, (0,255,0), 3)
-    cv2.imshow("drawing_cnt", thresh1)
+    #cv2.imshow("drawing_cnt", thresh1)
     for i in range(defects.shape[0]):
         s,e,f,d = defects[i,0]
         start = tuple(cnt[s][0])

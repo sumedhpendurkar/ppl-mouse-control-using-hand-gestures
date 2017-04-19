@@ -72,7 +72,7 @@ class action:
             self.prev_state = 'one'
 
     def two(self):
-        print "don"
+        print "Left Click"
         self.perform_release()
         if self.prev_state == 'two':
             return
@@ -81,7 +81,7 @@ class action:
         self.prev_state = 'two'
 
     def three(self):
-        print "tiin"
+        print "Right Click"
         self.perform_release()
         if self.prev_state == 'three':
             return
@@ -90,7 +90,7 @@ class action:
         self.prev_state = 'three'
 
     def four(self, hull_p):
-        print "char"
+        print "Drag and Drop"
         if self.prev_state != 'four':
             x, y = self.mouse_cntrl.position()
             self.mouse_cntrl.press(x,y)
@@ -104,15 +104,3 @@ class action:
                     y + self.sensitivity * self.y_convert *\
                     (-1 * self.prev_coordinates[1] + hull_p[1])
             self.mouse_cntrl.move(int(new_x), int(new_y))
-
-    def done(self, a):
-        pass
-
-    def dtwo(self):
-        pass
-
-    def dthree(self):
-        pass
-
-    def dfour(self):
-        pass
