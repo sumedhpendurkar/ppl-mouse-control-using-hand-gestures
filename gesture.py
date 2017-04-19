@@ -114,7 +114,7 @@ while(cap.isOpened()):
     elif count_defects == 3 and state:
         act.three()
     elif count_defects == 4 and state:
-        act.four()
+        act.four(far)
     else:
         act.zero()
     if not state:

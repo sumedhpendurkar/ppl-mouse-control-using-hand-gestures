@@ -26,10 +26,6 @@
 
 from pymouse import PyMouse
 class action:
-"""
-This class contains all the data elements and the functions related to the
-actions that take place when gestures change
-"""
     left_click = 1
     right_click = 2
     middle = 3
@@ -50,11 +46,16 @@ actions that take place when gestures change
     def screen_size(self):
         return self.mouse_cntrl.screen_size()
 
+    def perform_release(self):
+        if self.prev_state == 'four':
+            x, y = self.mouse_cntrl.position()
+            self.mouse_cntrl.release(x, y)
     def zero(self):
         self.prev_state = 'zero'
         print "Unable to detect"
 
     def one(self, hull_p):
+        self.perform_release()
         print  "ek. Co-ordinates in image"+ str(hull_p)
         if self.prev_state == 'one':
             x,y = self.mouse_cntrl.position()
@@ -72,6 +73,7 @@ actions that take place when gestures change
 
     def two(self):
         print "don"
+        self.perform_release()
         if self.prev_state == 'two':
             return
         current_x, current_y = self.mouse_cntrl.position()
@@ -80,14 +82,28 @@ actions that take place when gestures change
 
     def three(self):
         print "tiin"
+        self.perform_release()
         if self.prev_state == 'three':
             return
         current_x, current_y = self.mouse_cntrl.position()
         self.mouse_cntrl.click(current_x, current_y, self.right_click)
         self.prev_state = 'three'
 
-    def four(self):
+    def four(self, hull_p):
         print "char"
+        if self.prev_state != 'four':
+            x, y = self.mouse_cntrl.position()
+            self.mouse_cntrl.press(x,y)
+            self.prev_state = 'four'
+            self.prev_coordinates[0] = hull_p[0]
+            self.prev_coordinates[1] = hull_p[1]
+        elif self.prev_state == 'four':
+            x, y = self.mouse_cntrl.position()
+            new_x, new_y = x + self.sensitivity * self.x_convert * (-1 * \
+                    self.prev_coordinates[0] + hull_p[0]), \
+                    y + self.sensitivity * self.y_convert *\
+                    (-1 * self.prev_coordinates[1] + hull_p[1])
+            self.mouse_cntrl.move(int(new_x), int(new_y))
 
     def done(self, a):
         pass
