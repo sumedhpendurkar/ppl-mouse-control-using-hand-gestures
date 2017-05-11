@@ -32,6 +32,7 @@ class action:
     prev_coordinates = [-1, -1]
     prev_state = ''
     def __init__(self, img_shape):
+        """ Initalize actions; set up screen size and senstivity"""
         self.mouse_cntrl = PyMouse()
         shape_y, shape_x, _ = img_shape
         print shape_x, shape_y, self.mouse_cntrl.screen_size()
@@ -41,20 +42,25 @@ class action:
         self.sensitivity = 1.0
 
     def update_sensitivity(self, sensitivity):
+        #update sensitivity
         self.sensitivity = sensitivity / 100.0
 
     def screen_size(self):
         return self.mouse_cntrl.screen_size()
 
     def perform_release(self):
+        # use in drag and drop to perform drop
         if self.prev_state == 'four':
             x, y = self.mouse_cntrl.position()
             self.mouse_cntrl.release(x, y)
+
     def zero(self):
+        # No fingers
         self.prev_state = 'zero'
         print "Unable to detect"
 
     def one(self, hull_p):
+        # one finger; movement control
         self.perform_release()
         print  "ek. Co-ordinates in image"+ str(hull_p)
         if self.prev_state == 'one':
@@ -72,6 +78,7 @@ class action:
             self.prev_state = 'one'
 
     def two(self):
+        # two fingers; left click
         print "Left Click"
         self.perform_release()
         if self.prev_state == 'two':
@@ -81,6 +88,7 @@ class action:
         self.prev_state = 'two'
 
     def three(self):
+        # 3 fingers; performs right click
         print "Right Click"
         self.perform_release()
         if self.prev_state == 'three':
@@ -90,6 +98,7 @@ class action:
         self.prev_state = 'three'
 
     def four(self, hull_p):
+        # four fingers; drag and drop
         print "Drag and Drop"
         if self.prev_state != 'four':
             x, y = self.mouse_cntrl.position()

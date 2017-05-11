@@ -58,7 +58,6 @@ while(cap.isOpened()):
     blurred = cv2.GaussianBlur(grey, value, 0)
     _, thresh1 = cv2.threshold(blurred, 127, 255,
                                cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
-    #cv2.imshow('Thresholded', thresh1)
 
     version = '2'
     (version, _, _) = cv2.__version__.split('.')
@@ -94,7 +93,6 @@ while(cap.isOpened()):
     defects = cv2.convexityDefects(cnt,hull)
     count_defects = 0
     thresh1 = cv2.drawContours(thresh1, contours[0], -1, (0,255,0), 3)
-    #cv2.imshow("drawing_cnt", thresh1)
     for i in range(defects.shape[0]):
         s,e,f,d = defects[i,0]
         start = tuple(cnt[s][0])
@@ -109,6 +107,7 @@ while(cap.isOpened()):
             cv2.circle(crop_img,far,1,[0,0,255],-1)
         cv2.line(crop_img,start,end,[0,255,0],2)
     act.update_sensitivity(cv2.getTrackbarPos("Mouse Sensitivity", "alltime"))
+
     if count_defects == 1 and state:
         act.one(far)
     elif count_defects == 2 and state:
@@ -123,11 +122,7 @@ while(cap.isOpened()):
         a = int(raw_input())
         if a == 1:
             state = True
-    #cv2.imshow('drawing', drawing)
-    #cv2.imshow('end', crop_img)
-    #cv2.imshow('Gesture', img)
     all_img = np.hstack((drawing, crop_img))
-    #cv2.imshow('Contours', all_img)
     k = cv2.waitKey(10)
     if k == 27:
         break
